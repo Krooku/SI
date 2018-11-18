@@ -82,6 +82,20 @@ class Saper:
             else:
                 return False
 
+    def rozbroj(self, mapa):
+        if (self.kierunek == 0):
+            if (mapa[self.x + 1][self.y] == "2"):
+                mapa[self.x + 1][self.y] = "3"
+        elif (self.kierunek == 1):
+            if (mapa[self.x][self.y + 1] == "2"):
+                mapa[self.x][self.y + 1] = "3"
+        elif (self.kierunek == 2):
+            if (mapa[self.x - 1][self.y] == "2"):
+                mapa[self.x - 1][self.y] = "3"
+        elif (self.kierunek == 3):
+            if (mapa[self.x][self.y - 1] == "2"):
+                mapa[self.x][self.y - 1] = "3"
+
     def porusz(self, mapa):
         if not(self.kolizja(mapa)):
             if (self.kierunek == 0):
@@ -101,22 +115,22 @@ class Saper:
 
 
 
-class Bomba:
-    def __init__(self, pozycjax, pozycjay, uzbrojona):
-        self.uzbrojona = uzbrojona
-        self.x = pozycjax
-        self.y = pozycjay
-        self.bombaModel = pygame.image.load("bomba.gif")
-        self.bombaModelRect = self.bombaModel.get_rect()
-        self.bombaModelRect = self.bombaModelRect.move(self.x, self.y)
+#class Bomba:
+#    def __init__(self, pozycjax, pozycjay, uzbrojona):
+#        self.uzbrojona = uzbrojona
+#        self.x = pozycjax
+#        self.y = pozycjay
+#        self.bombaModel = pygame.image.load("bomba.gif")
+#        self.bombaModelRect = self.bombaModel.get_rect()
+#        self.bombaModelRect = self.bombaModelRect.move(self.x, self.y)
+#
+#    def rozbroj(self):
+#        self.uzbrojona = False
+#        self.bombaModel = pygame.image.load("bombarozbrojona.gif")
 
-    def rozbroj(self):
-        self.uzbrojona = False
-        self.bombaModel = pygame.image.load("bombarozbrojona.gif")
-
-def tekst(x):   #informacje na ekranie
+def tekst(x, mapa):   #informacje na ekranie
    font=pygame.font.SysFont("monospace", 15)
-   napis=font.render("kierunek:"+str(x) + " pozycja: " + str(saper.x) + " " + str(saper.y) , 1,(255,255,255))
+   napis=font.render("Kierunek:"+str(x) + " Pozycja: " + str(saper.x) + " " + str(saper.y) + " Bomby: " + str(sprawdzbomby(mapa)) , 2 ,(255,255,255))
    gameDisplay.blit(napis, (0, 0))
 
 def ladujmape(nazwa):   #ladowanie mapy do tablicy
@@ -136,6 +150,18 @@ def krzak(x,y):
     krzakRect = pygame.Rect(x*bokKratki, y*bokKratki, bokKratki, bokKratki)
     gameDisplay.blit(krzakModel, krzakRect)
 
+#rysowanie bomby
+def bomba(x,y):
+    bombaModel = pygame.image.load("bomba.gif")
+    bombaRect = pygame.Rect(x*bokKratki, y*bokKratki, bokKratki, bokKratki)
+    gameDisplay.blit(bombaModel, bombaRect)
+
+#rysowanie rozbrojonej bomby
+def bombarozbrojona(x,y):
+    bombaRozbrojonaModel = pygame.image.load("bombarozbrojona.gif")
+    bombaRozbrojonaRect = pygame.Rect(x*bokKratki, y*bokKratki, bokKratki, bokKratki)
+    gameDisplay.blit(bombaRozbrojonaModel, bombaRozbrojonaRect)
+
 #rysowanie obiektow na mapie
 def rysujobiekty(mapa):
     posx = 0
@@ -146,9 +172,40 @@ def rysujobiekty(mapa):
                 sciana(posy, posx)
             elif (b == "4"):
                 krzak(posy, posx)
+            elif (b == "2"):
+                bomba(posy, posx)
+            elif (b == "3"):
+                bombarozbrojona(posy,posx)
             posy += 1
         posx += 1
 
+#sprawdzenie ilosci bomb na mapie
+def sprawdzbomby(mapa):
+    ilosc = 0
+    for a in mapa:
+        for b in a:
+            if(b == "2"):
+                   ilosc += 1
+    return ilosc
+
+#informacja o zakonczeniu
+def koniec():
+    font = pygame.font.SysFont("monospace", 15)
+    if (sprawdzbomby(mapa) == 0):
+        napis = font.render(
+            "Rozbrojono wszystkie bomby.",
+            2, (255, 255, 255))
+    else:
+        napis = font.render(
+            "Zakonczono.",
+            2, (255, 255, 255))
+    gameDisplay.blit(napis, (window_height/2, window_width/2))
+    pygame.display.update()
+    pygame.time.wait(20000)
+
+
+
+#--------------------------------------------------------------------------------
 
 gameDisplay = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption('Saper')
@@ -157,10 +214,10 @@ gameExit = False
 
 #inicjalizacja elementow srodowiska
 mapa = ladujmape("mapa1")
-testowaBomba = Bomba(120, 100, True)
+#testowaBomba = Bomba(120, 100, True)
 saper = Saper(2, 2, 0)
 
-while not gameExit: #game_loop
+while not (sprawdzbomby(mapa) == 0 or gameExit): #game_loop
     for event in pygame.event.get(): #event_loop
         if event.type == pygame.QUIT:
             gameExit = True
@@ -175,17 +232,19 @@ while not gameExit: #game_loop
                 saper.zmienkierunek(1)
             if event.key == pygame.K_LEFT:
                 saper.zmienkierunek(2)
-            if event.key == pygame.K_k: #test rozbrojenia bomby
-                testowaBomba.rozbroj()
+            if event.key == pygame.K_SPACE:
+                saper.rozbroj(mapa)
+
 
     #kwadrat.x += math.sin(clock.tick(FPS))
     #kwadrat.y += math.cos(clock.tick(FPS))
     gameDisplay.fill(bg_color)
     rysujobiekty(mapa)
     gameDisplay.blit(saper.saperModel, saper.saperModelRect)
-    gameDisplay.blit(testowaBomba.bombaModel, testowaBomba.bombaModelRect)
-    tekst(saper.kierunek)
+    #gameDisplay.blit(testowaBomba.bombaModel, testowaBomba.bombaModelRect)
+    tekst(saper.kierunek, mapa)
     pygame.display.update()
     clock.tick(FPS)
+koniec()
 pygame.quit()
 quit()
