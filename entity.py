@@ -4,7 +4,7 @@ import pygame
 class Entity(pygame.sprite.Sprite):
 
     def __init__(self):
-        super().__init__()
+        super(pygame.sprite.Sprite, self).__init__()
         self.velocity = (0, 0)
         self.active = True
         self.group_id = 0

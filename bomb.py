@@ -4,7 +4,7 @@ import entity
 
 class Bomb(entity.Entity):
     def __init__(self, x, y, file_name, level):
-        super().__init__()
+        super(entity.Entity, self).__init__()
 
         self.x = x
         self.y = y
