@@ -1,7 +1,10 @@
 import pygame
+import map
+import saper
+import bomb
+import entity_manager
 import math
 import sys
-
 
 # do zrobienia
 
@@ -36,15 +39,28 @@ bg_color = green
 
 window_width = 992
 window_height = 800
-bokKratki = 40
 FPS = 30
 
+level = map.Map(32)
+level.load_map("mapa1")
+
+entity_manager = entity_manager.Entity_manager()
+
+entity_manager.add(bomb.Bomb(4, 20, "bomba.gif", level))
+entity_manager.add(bomb.Bomb(8, 15, "bomba.gif", level))
+entity_manager.add(bomb.Bomb(11, 5, "bomba.gif", level))
+entity_manager.add(bomb.Bomb(23, 20, "bomba.gif", level))
+entity_manager.add(bomb.Bomb(23, 13, "bomba.gif", level))
+entity_manager.add(saper.Saper(2, 2, 0, "saper.gif", level))
+
+
+'''
 class Saper:
     def __init__(self, pozycjax, pozycjay, kierunek):
         self.x = pozycjax
         self.y = pozycjay
         self.kierunek = kierunek #kierunek poruszania sie (0 - dol, 1 - prawo, 2 - gora, 3 - lewo)
-        self.saperModel = pygame.image.load("saper.gif")
+        self.saperModel = pygame.image.load("images/saper.gif")
         self.saperModelRect = self.saperModel.get_rect()
         self.saperModelRect.x = self.x*bokKratki
         self.saperModelRect.y = self.y*bokKratki
@@ -112,7 +128,7 @@ class Saper:
                 self.y -= 1
         else:
             print(self.kolizja(mapa))
-
+'''
 
 
 #class Bomba:
@@ -127,7 +143,7 @@ class Saper:
 #    def rozbroj(self):
 #        self.uzbrojona = False
 #        self.bombaModel = pygame.image.load("bombarozbrojona.gif")
-
+'''
 def tekst(x, mapa):   #informacje na ekranie
    font=pygame.font.SysFont("monospace", 15)
    napis=font.render("Kierunek:"+str(x) + " Pozycja: " + str(saper.x) + " " + str(saper.y) + " Bomby: " + str(sprawdzbomby(mapa)) , 2 ,(255,255,255))
@@ -201,23 +217,16 @@ def koniec():
             2, (255, 255, 255))
     gameDisplay.blit(napis, (window_height/2, window_width/2))
     pygame.display.update()
-    pygame.time.wait(20000)
-
-
+    pygame.time.wait(20000)'''
 
 #--------------------------------------------------------------------------------
 
 gameDisplay = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption('Saper')
+pygame.display.set_caption('Inteligentny Saper')
 clock = pygame.time.Clock()
 gameExit = False
 
-#inicjalizacja elementow srodowiska
-mapa = ladujmape("mapa1")
-#testowaBomba = Bomba(120, 100, True)
-saper = Saper(2, 2, 0)
-
-while not (sprawdzbomby(mapa) == 0 or gameExit): #game_loop
+while not gameExit: #game_loop
     for event in pygame.event.get(): #event_loop
         if event.type == pygame.QUIT:
             gameExit = True
@@ -225,26 +234,27 @@ while not (sprawdzbomby(mapa) == 0 or gameExit): #game_loop
             if event.key == pygame.K_ESCAPE:
                 gameExit = True
             if event.key == pygame.K_DOWN:
-                saper.zmienkierunek(0)
+                entity_manager.entites[5].change_direction(0)
             if event.key == pygame.K_UP:
-                saper.porusz(mapa)
+                entity_manager.entites[5].move(level)
             if event.key == pygame.K_RIGHT:
-                saper.zmienkierunek(1)
+                entity_manager.entites[5].change_direction(1)
             if event.key == pygame.K_LEFT:
-                saper.zmienkierunek(2)
-            if event.key == pygame.K_SPACE:
-                saper.rozbroj(mapa)
+                entity_manager.entites[5].change_direction(2)
+            #if event.key == pygame.K_SPACE:
+                #saper.rozbroj(mapa)
 
+    entity_manager.update(gameDisplay)
 
-    #kwadrat.x += math.sin(clock.tick(FPS))
-    #kwadrat.y += math.cos(clock.tick(FPS))
     gameDisplay.fill(bg_color)
-    rysujobiekty(mapa)
-    gameDisplay.blit(saper.saperModel, saper.saperModelRect)
+    #rysujobiekty(mapa)
+
+    level.draw_map(gameDisplay)
+    entity_manager.render(gameDisplay)
     #gameDisplay.blit(testowaBomba.bombaModel, testowaBomba.bombaModelRect)
-    tekst(saper.kierunek, mapa)
+    #tekst(saper.kierunek, mapa)
     pygame.display.update()
     clock.tick(FPS)
-koniec()
+#koniec()
 pygame.quit()
 quit()
