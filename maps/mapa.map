@@ -1,0 +1,75 @@
+[level]
+tileset = images/tileset.png
+map =   /-------------\
+        E.^...........3
+        E.@.^^^.......3
+        E.HHHHH.......3
+        E.HH..H.......3
+        E..H..H.......3
+        E.....H.^^^...3
+        E.....HHHHH...3
+        E.....H.......3
+        E.....H.^.....3
+        E.....HHH.....3
+        E.....HHH.....3
+        E.....HHH.....3
+        E.............3
+        <_____________>
+
+[.]
+name = sand
+tile = 5, 3
+
+[H]
+name = path
+tile = 6, 1
+
+[^]
+name = path_up
+tile = 6, 0
+
+[/]
+name = wall_left_up
+tile = 3, 2
+block = true
+
+[\]
+name = wall_right_up
+tile = 4, 2
+block = true
+
+[<]
+name = wall_left_down
+tile = 3, 3
+block = true
+
+[>]
+name = wall_right_down
+tile = 4, 3
+block = true
+
+[E]
+name = wall_left
+tile = 2, 1
+block = true
+
+[3]
+name = wall_right
+tile = 0, 1
+block = true
+
+[-]
+name = wall_up
+tile = 1, 2
+block = true
+
+[_]
+name = wall_down
+tile = 1, 0
+block = true
+
+[@]
+name = player
+tile = 6, 1
+player = true
+sprite = player.png
