@@ -6,10 +6,17 @@ class Map:
         self.data = []
         self.width = width
         self.bombs = 5
+        self.bushes = []
+        self.map_width = 0
+        self.map_height = 0
 
     def load_map(self, file_name):
         f = open("maps/" + file_name).read()
         self.data = [y.split() for y in f.split('\n')]
+        for a in self.data:
+            self.map_height += 1
+            for b in a:
+                self.map_width += 1
         return self.data
 
     def draw_element(self, x, y, file_name, display):
@@ -48,3 +55,14 @@ class Map:
                     self.draw_element(posy, posx, "bush2.png", display)
                 posy += 1
             posx += 1
+
+    def return_bushes_coords(self):
+        y = 0
+        for a in self.data:
+            x = 0
+            for b in a:
+                if (b == "b" or b == "c"):
+                    self.bushes.append((x, y))
+                x += 1
+            y += 1
+        return self.bushes

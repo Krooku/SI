@@ -1,5 +1,4 @@
 
-
 class Entity_manager:
     def __init__(self):
         self.entites = []
@@ -18,3 +17,10 @@ class Entity_manager:
     def render(self, display):
         for entity in self.entites:
             display.blit(entity.model, entity.model_rect)
+
+    def return_bomb_coords(self):
+        coords = []
+        for a in self.entites:
+            if (a.group_id == 2):
+                coords.append((a.x,a.y))
+        return coords

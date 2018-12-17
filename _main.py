@@ -21,14 +21,16 @@ FPS = 30
 level = map.Map(32)
 level.load_map("mapa1")
 
+
 entity_manager = entity_manager.Entity_manager()
 
-entity_manager.add(bomb.Bomb(4, 20, "bomba.gif", level))
+entity_manager.add(bomb.Bomb(7, 12, "bomba.gif", level))
 entity_manager.add(bomb.Bomb(8, 15, "bomba.gif", level))
 entity_manager.add(bomb.Bomb(11, 5, "bomba.gif", level))
 entity_manager.add(bomb.Bomb(23, 20, "bomba.gif", level))
-entity_manager.add(bomb.Bomb(23, 13, "bomba.gif", level))
-entity_manager.add(saper.Saper(2, 2, 0, "saper.gif", level))
+entity_manager.add(bomb.Bomb(21, 7, "bomba.gif", level))
+entity_manager.add(saper.Saper(4, 3, 0, "saper.gif", level, entity_manager))
+
 
 #--------------------------------------------------------------------------------
 
@@ -44,21 +46,16 @@ while not gameExit: #game_loop
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 gameExit = True
-            if event.key == pygame.K_DOWN:
-                entity_manager.entites[5].change_direction(0)
-            if event.key == pygame.K_UP:
-                entity_manager.entites[5].move(level)
-            if event.key == pygame.K_RIGHT:
-                entity_manager.entites[5].change_direction(1)
-            if event.key == pygame.K_LEFT:
-                entity_manager.entites[5].change_direction(2)
+        if entity_manager.entites[5].bombs_left == 0:
+            gameExit = True
             #if event.key == pygame.K_SPACE:
                 #saper.rozbroj(mapa)
 
     entity_manager.update(gameDisplay)
-    rand = random.randint(0, 4)
-    entity_manager.entites[5].change_direction(rand)
-    entity_manager.entites[5].move(level)
+    #rand = random.randint(0, 4)
+    #entity_manager.entites[5].change_direction(rand)
+    #entity_manager.entites[5].move(level)
+    entity_manager.entites[5].search(level)
 
     gameDisplay.fill(bg_color)
     #rysujobiekty(mapa)
