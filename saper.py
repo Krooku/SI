@@ -65,7 +65,8 @@ class Saper(entity.Entity):
                 return False
 
     def collision(self, entity):
-        if(entity.group_id == 2):
+        if(entity.group_id == 3 or entity.group_id == 2):
+            print("Rozpoznaje...")
             entity.defuse()
 
     def move(self, level):

@@ -21,6 +21,6 @@ class Entity_manager:
     def return_bomb_coords(self):
         coords = []
         for a in self.entites:
-            if (a.group_id == 2):
+            if (a.group_id == 2 or a.group_id == 3):
                 coords.append((a.x,a.y))
         return coords
