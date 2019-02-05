@@ -33,7 +33,7 @@ class neuralnetwork():
         if (os.path.isfile('tr.h5')):
             self.classifier.load_weights('tr.h5')
         else:
-            self.classifier.fit_generator(self.training_set, steps_per_epoch=210, epochs=2, validation_data=test_set, validation_steps=800)
+            self.classifier.fit_generator(self.training_set, steps_per_epoch=200, epochs=10, validation_data=test_set, validation_steps=800)
             self.classifier.save('tr.h5', True)
 
     def recognize(self, name):

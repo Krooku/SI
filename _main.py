@@ -21,7 +21,7 @@ window_height = 800
 FPS = 30
 
 level = map.Map(32)
-level.load_map("mapa1")
+level.load_map("mapa2")
 
 neuralnet = neuralnetwork.neuralnetwork()
 
@@ -30,8 +30,8 @@ entity_manager = entity_manager.Entity_manager()
 entity_manager.add(bomb.Bomb(7, 12, "bomba.gif", level, neuralnet))
 entity_manager.add(bomb.Bomb(8, 15, "bomba.gif", level, neuralnet))
 entity_manager.add(bomb.Bomb(11, 5, "bomba.gif", level, neuralnet))
-entity_manager.add(trash.Trash(23, 20, "bomba.gif", level, neuralnet))
-entity_manager.add(bomb.Bomb(21, 7, "bomba.gif", level, neuralnet))
+entity_manager.add(trash.Trash(15, 4, "bomba.gif", level, neuralnet))
+entity_manager.add(bomb.Bomb(3, 7, "bomba.gif", level, neuralnet))
 entity_manager.add(saper.Saper(4, 3, 0, "saper.gif", level, entity_manager))
 
 #--------------------------------------------------------------------------------
