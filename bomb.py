@@ -27,7 +27,7 @@ class Bomb(entity.Entity):
                 self.load("bombarozbrojona.gif")
                 self.active = False
             else:
-                self.load("bombazle.jpg")
+                self.load("bombazle.gif")
 
     def collision(self, entity):
         if(entity.group_id == 4):
