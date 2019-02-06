@@ -6,7 +6,7 @@ class Entity_manager:
     def add(self, entity):
         self.entites.append(entity)
 
-    def update(self, display):
+    def update(self):
         for entity1 in self.entites:
             for entity2 in self.entites:
                 if (entity1 != entity2):
@@ -24,3 +24,6 @@ class Entity_manager:
             if (a.group_id == 2):
                 coords.append((a.x,a.y))
         return coords
+
+    def reset(self):
+        self.entites.clear()

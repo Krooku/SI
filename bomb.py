@@ -3,11 +3,13 @@ import entity
 
 
 class Bomb(entity.Entity):
-    def __init__(self, x, y, file_name, level):
+    def __init__(self, x, y, file_name, level, time):
         super(entity.Entity, self).__init__()
 
         self.x = x
         self.y = y
+
+        self.time = time
 
         self.group_id = 2
 
@@ -20,6 +22,6 @@ class Bomb(entity.Entity):
         self.load("bombarozbrojona.gif")
 
     def collision(self, entity):
-        if(entity.group_id == 4):
-            print("xd")
+        if(entity.group_id == 1):
+           cos = 0
 
