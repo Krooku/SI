@@ -1,10 +1,7 @@
 from deap import creator, base, tools, algorithms
 import random
-import copy
 import numpy
-import pickle
 import multiprocessing
-import itertools
 
 
 #szansa crossover, szansa mutacji
@@ -17,7 +14,7 @@ def set_creator(cr):
 
 set_creator(creator)
 #really just cares about others when there is a draw)
-creator.create("FitnessMulti", base.Fitness, weights=(-100.0, 1.0, -10.0))
+creator.create("FitnessMulti", base.Fitness, weights=(1.0, -100.0, 10.0))
 creator.create("Individual", list, fitness=creator.FitnessMulti)
 
 def set_creator(cr):
@@ -48,7 +45,7 @@ def prepare_genetic(entity_manager, level):
 
         #registers how to make an individual
     toolbox.register("individual", tools.initRepeat, creator.Individual,
-                     toolbox.attr_int,  entity_manager.entites[5].bombs_left * 3 ) #len(LogicEngine.monsters + LogicEngine.mixtures) * 3)#ilosc bomb
+                     toolbox.attr_int,  entity_manager.entites[5].bombs_left * 3) #len(LogicEngine.monsters + LogicEngine.mixtures) * 3)#ilosc bomb
 
 
     #register statistics
@@ -142,7 +139,7 @@ def simulate_from_list(list_of_indexes_of_objects_to_visit, entity_manager):
     for index in list_of_indexes_of_objects_to_visit:
         if(simulated_logic_engine.entites[index].group_id == 2):
             simulated_logic_engine = simulated_logic_engine.entites[5].simulate_move_absolute_coordinate(x = simulated_logic_engine.entites[index].x, y = simulated_logic_engine.entites[index].y)
-            if(simulated_logic_engine.entites[5].bombs_left == 0 or simulated_logic_engine.entites[5].bombs_time() < 70):
+            if(simulated_logic_engine.entites[5].bombs_time() < 50):
                 break
     return simulated_logic_engine
 
