@@ -34,14 +34,6 @@ entity_manager.add(trash.Trash(15, 4, "bomba.gif", level, neuralnet))
 entity_manager.add(bomb.Bomb(3, 7, "bomba.gif", level, neuralnet))
 entity_manager.add(saper.Saper(4, 3, 0, "saper.gif", level, entity_manager))
 
-neuralnet.recognize('images/dataset/random_trash/r (1).jpg')
-neuralnet.recognize('images/dataset/random_trash/r (2).jpg')
-neuralnet.recognize('images/dataset/random_trash/r (3).jpg')
-neuralnet.recognize('images/dataset/random_trash/r (4).jpg')
-neuralnet.recognize('images/dataset/random_trash/r (5).jpg')
-neuralnet.recognize('images/dataset/random_trash/r (6).jpg')
-
-
 #--------------------------------------------------------------------------------
 
 gameDisplay = pygame.display.set_mode((window_width, window_height))
